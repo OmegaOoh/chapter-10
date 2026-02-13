@@ -15,6 +15,9 @@
                     <div class="text-xl font-bold">
                         FlixTube
                     </div>
+                    <div class="text-lg font-bold">
+                        Hello world.
+                    </div>
                     <div class="ml-16 border-b-2 border-blue-600">
                         <a href="/">Videos</a>
                     </div>
@@ -33,7 +36,7 @@
                     {{#if videos}}
                         {{#each videos}}
                             <div class="mt-1">
-                                <a href="/video?id={{this._id}}">{{this.name}}</a> 
+                                <a href="/video?id={{this._id}}">{{this.name}}</a>
                             </div>
                         {{/each}}
                     {{else}}
