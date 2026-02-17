@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Shopee",
+    "url": "https://shopee.co.th",
+    "img": "images/shopee.jpg"
+  },
+  {
+    "name": "Lazada",
+    "url": "https://www.lazada.co.th",
+    "img": "images/lazada.jpg"
+  },
+  {
+    "name": "Kaidee",
+    "url": "https://www.kaidee.com",
+    "img": "images/kaidee.jpg"
+  }
+]

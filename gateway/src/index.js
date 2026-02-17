@@ -16,7 +16,7 @@ async function main() {
 
     app.set("views", path.join(__dirname, "views")); // Set directory that contains templates for views.
     app.set("view engine", "hbs"); // Use hbs as the view engine for Express.
-    
+
     app.use(express.static("public"));
 
     //
@@ -45,7 +45,7 @@ async function main() {
             metadata: videoResponse.data.video,
             url: `/api/video?id=${videoId}`,
         };
-        
+
         // Renders the video for display in the browser.
         res.render("play-video", { video });
     });
@@ -70,14 +70,31 @@ async function main() {
     });
 
     //
+    // Web page to show ads
+    //
+    app.get("/advertise", async (req, res) => {
+        try {
+          const adsResponse = await axios.get("http://advertise/ads");
+          const ads = adsResponse.data.map(ad => ({
+              ...ad,
+              img: `/api/advertise/images?imageName=${ad.img.split('/').pop()}` 
+          }));
+          res.render("advertisement", { ads });
+        } catch (err) {
+            console.error("Failed to fetch ads:", err.message);
+            res.status(500).send("Error loading advertisements");
+        }
+    });
+
+    //
     // HTTP GET route that streams video to the user's browser.
     //
     app.get("/api/video", async (req, res) => {
 
         const response = await axios({ // Forwards the request to the video-streaming microservice.
             method: "GET",
-            url: `http://video-streaming/video?id=${req.query.id}`, 
-            data: req, 
+            url: `http://video-streaming/video?id=${req.query.id}`,
+            data: req,
             responseType: "stream",
         });
         response.data.pipe(res);
@@ -90,8 +107,8 @@ async function main() {
 
         const response = await axios({ // Forwards the request to the video-upload microservice.
             method: "POST",
-            url: "http://video-upload/upload", 
-            data: req, 
+            url: "http://video-upload/upload",
+            data: req,
             responseType: "stream",
             headers: {
                 "content-type": req.headers["content-type"],
@@ -99,7 +116,24 @@ async function main() {
             },
         });
         response.data.pipe(res);
-    });
+  });
+
+    //
+    // HTTP GET route to retrieve advert image
+    // 
+  app.get("/api/advertise/images", async (req, res) => {
+    const imageName = req.query.imageName;
+    try {
+      const response = await axios({
+          method: "GET",
+          url: `http://advertise/images/${imageName}`,
+          responseType: "stream",
+      });
+      response.data.pipe(res);
+    } catch (err) {
+      res.status(404).send("Image not found")
+    }
+  });
 
     app.listen(PORT, () => {
         console.log("Microservice online.");

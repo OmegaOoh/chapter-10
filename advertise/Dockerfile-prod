@@ -1,0 +1,10 @@
+FROM node:18.17.1
+
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY ./src ./src
+COPY ./public ./public
+COPY advert_data.json ./advert_data.json
+
+CMD npm start

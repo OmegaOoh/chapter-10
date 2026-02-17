@@ -1,4 +1,4 @@
-# 
+#
 # Remove containers from Kubernetes.
 #
 # Usage:
@@ -14,3 +14,4 @@ envsubst < mock-storage.yaml | kubectl delete -f -
 envsubst < video-streaming.yaml | kubectl delete -f -
 envsubst < video-upload.yaml | kubectl delete -f -
 envsubst < gateway.yaml | kubectl delete -f -
+envsubst < advertise.yaml | kubectl delete -f -
